@@ -41,4 +41,127 @@
         .lightbox-img { max-width: 90%; max-height: 80%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); animation: zoomIn 0.3s ease; }
         
         /* Nút điều hướng phóng to */
-        .lightbox-btn { position: absolute; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 24px; width: 50px; height: 50px
+        .lightbox-btn { position: absolute; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 24px; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
+        .lightbox-btn:hover { background: #00fff0; color: #000; box-shadow: 0 0 15px rgba(0, 255, 240, 0.6); }
+        .close-btn { top: 20px; right: 20px; }
+        .prev-btn { left: 20px; }
+        .next-btn { right: 20px; }
+
+        /* Trình phát nhạc VIP mượt mà */
+        .audio-player { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 15px; display: flex; align-items: center; gap: 15px; }
+        .audio-icon { font-size: 24px; color: #00fff0; animation: pulse 1.5s infinite alternate; }
+        .audio-info { text-align: left; flex-grow: 1; }
+        .audio-info p { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+        audio { width: 100%; height: 30px; margin-top: 5px; filter: invert(90%) hue-rotate(180deg); }
+
+        /* Khung chứa Video */
+        .video-container { border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        iframe { width: 100%; aspect-ratio: 16/9; border: none; display: block; }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            100% { transform: scale(1.05); opacity: 1; }
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="vip-card">
+    <div class="avatar-container">
+        <img class="avatar" src="https://picsum.photos/150/150" alt="Avatar">
+        <span class="vip-badge"><i class="fa-solid fa-check"></i> VIP</span>
+    </div>
+    
+    <h1>TÊN CỦA BẠN CHỮ IN HOA</h1>
+    <p class="bio">Digital Creator | Chào mừng bạn đến với không gian âm nhạc & nghệ thuật của tôi</p>
+    
+    <div class="social-icons">
+        <a href="#" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="#" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+    </div>
+
+    <div class="section-title">📷 Album hình ảnh</div>
+    <div class="image-grid">
+        <div class="image-item" onclick="openLightbox(0)"><img src="https://picsum.photos/800/600?random=11" alt="Ảnh 1"></div>
+        <div class="image-item" onclick="openLightbox(1)"><img src="https://picsum.photos/800/600?random=12" alt="Ảnh 2"></div>
+        <div class="image-item" onclick="openLightbox(2)"><img src="https://picsum.photos/800/600?random=13" alt="Ảnh 3"></div>
+        <div class="image-item" onclick="openLightbox(3)"><img src="https://picsum.photos/800/600?random=14" alt="Ảnh 4"></div>
+    </div>
+
+    <div class="section-title">🎵 Bài hát yêu thích</div>
+    <div class="audio-player">
+        <div class="audio-icon"><i class="fa-solid fa-compact-disc fa-spin"></i></div>
+        <div class="audio-info">
+            <p>Tên Bài Hát Ở Đây - Ca Sĩ</p>
+            <audio controls>
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+    </div>
+
+    <div class="section-title">🎥 Video nổi bật</div>
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+    </div>
+</div>
+
+<div id="lightboxOverlay" class="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-btn close-btn" onclick="forceCloseLightbox()"><i class="fa-solid fa-xmark"></i></button>
+    <button class="lightbox-btn prev-btn" onclick="changeImage(-1, event)"><i class="fa-solid fa-chevron-left"></i></button>
+    
+    <img id="lightboxImage" class="lightbox-img" src="" alt="Phóng to">
+    
+    <button class="lightbox-btn next-btn" onclick="changeImage(1, event)"><i class="fa-solid fa-chevron-right"></i></button>
+</div>
+
+<script>
+    let currentImgIndex = 0;
+    // Tự động gom tất cả các link ảnh trong lưới album vào danh sách
+    const images = Array.from(document.querySelectorAll('.image-grid .image-item img')).map(img => img.src);
+
+    function openLightbox(index) {
+        currentImgIndex = index;
+        document.getElementById('lightboxImage').src = images[currentImgIndex];
+        document.getElementById('lightboxOverlay').style.display = 'flex';
+    }
+
+    function forceCloseLightbox() {
+        document.getElementById('lightboxOverlay').style.display = 'none';
+    }
+
+    function closeLightbox(event) {
+        // Chỉ đóng khi người dùng click ra vùng tối bên ngoài, click vào ảnh hoặc nút chuyển không bị đóng
+        if (event.target.id === 'lightboxOverlay') {
+            forceCloseLightbox();
+        }
+    }
+
+    function changeImage(direction, event) {
+        event.stopPropagation(); // Ngăn hành vi đóng lightbox khi bấm nút chuyển đổi
+        currentImgIndex += direction;
+        
+        // Tạo vòng lặp nếu đi quá số lượng ảnh
+        if (currentImgIndex >= images.length) currentImgIndex = 0;
+        if (currentImgIndex < 0) currentImgIndex = images.length - 1;
+        
+        document.getElementById('lightboxImage').src = images[currentImgIndex];
+    }
+
+    // Hỗ trợ bấm phím mũi tên trái/phải và phím ESC trên bàn phím máy tính
+    document.addEventListener('keydown', function(e) {
+        if (document.getElementById('lightboxOverlay').style.display === 'flex') {
+            if (e.key === 'Escape') forceCloseLightbox();
+            if (e.key === 'ArrowRight') changeImage(1, event);
+            if (e.key === 'ArrowLeft') changeImage(-1, event);
+        }
+    });
+</script>
+
+</body>
+</html>
