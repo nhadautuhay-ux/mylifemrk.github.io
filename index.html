@@ -32,70 +32,13 @@
         
         /* Thiết kế lưới Album Ảnh nghệ thuật */
         .image-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .image-item { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 4/3; background: #222; border: 1px solid rgba(255,255,255,0.05); }
+        .image-item { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 4/3; background: #222; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
         .image-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
         .image-item:hover img { transform: scale(1.1); }
 
-        /* Trình phát nhạc VIP mượt mà */
-        .audio-player { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 15px; display: flex; align-items: center; gap: 15px; }
-        .audio-icon { font-size: 24px; color: #00fff0; animation: pulse 1.5s infinite alternate; }
-        .audio-info { text-align: left; flex-grow: 1; }
-        .audio-info p { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-        audio { width: 100%; height: 30px; margin-top: 5px; filter: invert(90%) hue-rotate(180deg); } /* Đổi màu trình phát nhạc hợp tông tối */
-
-        /* Khung chứa Video */
-        .video-container { border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        iframe { width: 100%; aspect-ratio: 16/9; border: none; display: block; }
-
-        @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            100% { transform: scale(1.05); opacity: 1; }
-        }
-    </style>
-</head>
-<body>
-
-<div class="vip-card">
-    <div class="avatar-container">
-        <img class="avatar" src="https://picsum.photos/150/150" alt="Avatar">
-        <span class="vip-badge"><i class="fa-solid fa-check"></i> VIP</span>
-    </div>
-    
-    <h1>TÊN CỦA BẠN CHỮ IN HOA</h1>
-    <p class="bio">Digital Creator | Chào mừng bạn đến với không gian âm nhạc & nghệ thuật của tôi</p>
-    
-    <div class="social-icons">
-        <a href="#" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
-        <a href="#" target="_blank"><i class="fa-brands fa-youtube"></i></a>
-    </div>
-
-    <div class="section-title">📷 Album hình ảnh</div>
-    <div class="image-grid">
-        <div class="image-item"><img src="https://picsum.photos/400/300?random=11" alt="Ảnh 1"></div>
-        <div class="image-item"><img src="https://picsum.photos/400/300?random=12" alt="Ảnh 2"></div>
-        <div class="image-item"><img src="https://picsum.photos/400/300?random=13" alt="Ảnh 3"></div>
-        <div class="image-item"><img src="https://picsum.photos/400/300?random=14" alt="Ảnh 4"></div>
-    </div>
-
-    <div class="section-title">🎵 Bài hát yêu thích</div>
-    <div class="audio-player">
-        <div class="audio-icon"><i class="fa-solid fa-compact-disc fa-spin"></i></div>
-        <div class="audio-info">
-            <p>Tên Bài Hát Ở Đây - Ca Sĩ</p>
-            <audio controls>
-                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-                Trình duyệt của bạn không hỗ trợ phát âm thanh.
-            </audio>
-        </div>
-    </div>
-
-    <div class="section-title">🎥 Video nổi bật</div>
-    <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-    </div>
-</div>
-
-</body>
-</html>
+        /* Giao diện khung phóng to ảnh (Lightbox) ẩn mặc định */
+        .lightbox { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 10, 12, 0.95); display: none; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(8px); }
+        .lightbox-img { max-width: 90%; max-height: 80%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); animation: zoomIn 0.3s ease; }
+        
+        /* Nút điều hướng phóng to */
+        .lightbox-btn { position: absolute; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 24px; width: 50px; height: 50px
