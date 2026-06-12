@@ -38,7 +38,13 @@
 
         /* Giao diện khung phóng to ảnh (Lightbox) ẩn mặc định */
         .lightbox { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 10, 12, 0.95); display: none; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(8px); }
-        .lightbox-img { max-width: 90%; max-height: 80%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); animation: zoomIn 0.3s ease; }
+        
+        /* Khung gom nhóm Ảnh và Ghi chú để xếp chồng dọc */
+        .lightbox-content { display: flex; flex-direction: column; align-items: center; max-width: 90%; max-height: 85%; animation: zoomIn 0.3s ease; }
+        .lightbox-img { max-width: 100%; max-height: 75vh; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); }
+        
+        /* CSS cho phần Ghi chú dưới ảnh phóng to */
+        .lightbox-caption { margin-top: 15px; font-size: 16px; color: #00fff0; font-weight: 400; text-shadow: 0 2px 4px rgba(0,0,0,0.5); text-align: center; background: rgba(255,255,255,0.05); padding: 6px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); }
         
         /* Nút điều hướng phóng to */
         .lightbox-btn { position: absolute; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 24px; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
