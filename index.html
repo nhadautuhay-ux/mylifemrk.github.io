@@ -47,7 +47,7 @@
         .lightbox-caption { margin-top: 15px; font-size: 16px; color: #00fff0; font-weight: 400; text-shadow: 0 2px 4px rgba(0,0,0,0.5); text-align: center; background: rgba(255,255,255,0.05); padding: 6px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); }
         
         /* Nút điều hướng phóng to */
-        .lightbox-btn { position: absolute; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 24px; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
+        .lightbox-btn { position: absolute; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 24px; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.2s; z-index: 10000; }
         .lightbox-btn:hover { background: #00fff0; color: #000; box-shadow: 0 0 15px rgba(0, 255, 240, 0.6); }
         .close-btn { top: 20px; right: 20px; }
         .prev-btn { left: 20px; }
@@ -79,11 +79,10 @@
 <div class="vip-card">
     <div class="avatar-container">
         <img class="avatar" src="z7924576793433_21c45b9408bbf73677e9a4500c288e91.jpg" alt="Avatar">
-        <span class="vip-badge"><i class="fa-solid fa-check"></i> VIP</span>
     </div>
     
     <h1>NGUYỄN TRUNG KIÊN</h1>
-    <p class="bio">Digital Creator | Không gian âm nhạc & nghệ thuật</p>
+    <p class="bio">Digital Creator | Không gian âm nhạc & nghệ thuật của tôi</p>
     
     <div class="social-icons">
         <a href="#" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
@@ -94,10 +93,10 @@
 
     <div class="section-title">📷 Album hình ảnh</div>
     <div class="image-grid">
-        <div class="image-item" onclick="openLightbox(0)"><img src="z7924576793433_21c45b9408bbf73677e9a4500c288e91.jpg" alt="Ảnh 1"></div>
-        <div class="image-item" onclick="openLightbox(1)"><img src="https://picsum.photos/800/600?random=12" alt="Ảnh 2"></div>
-        <div class="image-item" onclick="openLightbox(2)"><img src="https://picsum.photos/800/600?random=13" alt="Ảnh 3"></div>
-        <div class="image-item" onclick="openLightbox(0)"><img src="https://docs.google.com/uc?export=download&id=1YO7xAEfmJZFfRKT_taCHuRStzlNhQWkj" alt="Ảnh 4"></div>
+        <div class="image-item" onclick="openLightbox(0)"><img src="z7924576793433_21c45b9408bbf73677e9a4500c288e91.jpg" alt="Làm việc tại IOC năm 2023 -2025🌲"></div>
+        <div class="image-item" onclick="openLightbox(1)"><img src="https://picsum.photos/800/600?random=12" alt="Sân khấu biểu diễn ca nhạc cực cháy mâm 🎸"></div>
+        <div class="image-item" onclick="openLightbox(2)"><img src="https://picsum.photos/800/600?random=13" alt="Khoảnh khắc hoàng hôn lãng mạn bên bờ biển 🌅"></div>
+        <div class="image-item" onclick="openLightbox(3)"><img src="https://picsum.photos/800/600?random=14" alt="Góc làm việc setup máy tính cá nhân buổi tối 💻"></div>
     </div>
 
     <div class="section-title">🎵 Bài hát yêu thích</div>
@@ -121,19 +120,25 @@
     <button class="lightbox-btn close-btn" onclick="forceCloseLightbox()"><i class="fa-solid fa-xmark"></i></button>
     <button class="lightbox-btn prev-btn" onclick="changeImage(-1, event)"><i class="fa-solid fa-chevron-left"></i></button>
     
-    <img id="lightboxImage" class="lightbox-img" src="" alt="Phóng to">
+    <div class="lightbox-content">
+        <img id="lightboxImage" class="lightbox-img" src="" alt="Phóng to">
+        <div id="lightboxCaption" class="lightbox-caption">Dòng ghi chú ảnh</div>
+    </div>
     
     <button class="lightbox-btn next-btn" onclick="changeImage(1, event)"><i class="fa-solid fa-chevron-right"></i></button>
 </div>
 
 <script>
     let currentImgIndex = 0;
-    // Tự động gom tất cả các link ảnh trong lưới album vào danh sách
-    const images = Array.from(document.querySelectorAll('.image-grid .image-item img')).map(img => img.src);
+    
+    // Thu thập danh sách các link ảnh và danh sách các đoạn ghi chú tương ứng
+    const imgElements = Array.from(document.querySelectorAll('.image-grid .image-item img'));
+    const images = imgElements.map(img => img.src);
+    const captions = imgElements.map(img => img.alt || "Hình ảnh không có ghi chú");
 
     function openLightbox(index) {
         currentImgIndex = index;
-        document.getElementById('lightboxImage').src = images[currentImgIndex];
+        updateLightboxContent();
         document.getElementById('lightboxOverlay').style.display = 'flex';
     }
 
@@ -142,24 +147,28 @@
     }
 
     function closeLightbox(event) {
-        // Chỉ đóng khi người dùng click ra vùng tối bên ngoài, click vào ảnh hoặc nút chuyển không bị đóng
         if (event.target.id === 'lightboxOverlay') {
             forceCloseLightbox();
         }
     }
 
     function changeImage(direction, event) {
-        event.stopPropagation(); // Ngăn hành vi đóng lightbox khi bấm nút chuyển đổi
+        event.stopPropagation(); 
         currentImgIndex += direction;
         
-        // Tạo vòng lặp nếu đi quá số lượng ảnh
         if (currentImgIndex >= images.length) currentImgIndex = 0;
         if (currentImgIndex < 0) currentImgIndex = images.length - 1;
         
-        document.getElementById('lightboxImage').src = images[currentImgIndex];
+        updateLightboxContent();
     }
 
-    // Hỗ trợ bấm phím mũi tên trái/phải và phím ESC trên bàn phím máy tính
+    // Hàm cập nhật cả ảnh lẫn ghi chú tương ứng cùng lúc
+    function updateLightboxContent() {
+        document.getElementById('lightboxImage').src = images[currentImgIndex];
+        document.getElementById('lightboxCaption').innerText = captions[currentImgIndex];
+    }
+
+    // Phím tắt bàn phím
     document.addEventListener('keydown', function(e) {
         if (document.getElementById('lightboxOverlay').style.display === 'flex') {
             if (e.key === 'Escape') forceCloseLightbox();
